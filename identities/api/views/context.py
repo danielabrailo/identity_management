@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework.generics import ListAPIView
 from identities.models import Context
-from .serializers import ContextSerializer
+from identities.api.serializers.context import ContextSerializer
 from rest_framework.permissions import IsAuthenticated
 
 
