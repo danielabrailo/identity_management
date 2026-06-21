@@ -52,8 +52,28 @@ class RequesterType(models.Model):
         return self.name
 
 class Policy(models.Model):
+    account = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="policies"
+    )
     context = models.ForeignKey(Context, on_delete=models.CASCADE)
-    requester_type = models.ForeignKey(RequesterType, on_delete=models.CASCADE)
+    requester_type = models.ForeignKey(
+        RequesterType,
+        on_delete=models.CASCADE
+    )
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=[
+                    'account',
+                    'context',
+                    'requester_type'
+                ],
+                name='unique_user_context_requester'
+            )
+        ]
 
     can_view_display_name = models.BooleanField(default=True)
     can_view_email = models.BooleanField(default=False)
@@ -63,4 +83,4 @@ class Policy(models.Model):
     can_view_social_media = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"Policy for {self.context.name}"
+        return f"{self.account.username} - {self.context.name} - {self.requester_type.name}"
