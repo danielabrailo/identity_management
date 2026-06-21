@@ -81,6 +81,8 @@ class Policy(models.Model):
     can_view_job_title = models.BooleanField(default=False)
     can_view_linkedin = models.BooleanField(default=False)
     can_view_social_media = models.BooleanField(default=False)
+    can_view_nickname = models.BooleanField(default=False)
+    can_view_organization = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.account.username} - {self.context.name} - {self.requester_type.name}"
