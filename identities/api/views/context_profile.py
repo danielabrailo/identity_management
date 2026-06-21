@@ -1,4 +1,7 @@
-from rest_framework.generics import ListCreateAPIView, RetrieveAPIView
+from rest_framework.generics import (
+    ListCreateAPIView, 
+    RetrieveUpdateDestroyAPIView,
+)
 from rest_framework.permissions import IsAuthenticated
 from identities.models import ContextProfile
 from identities.api.serializers.context_profile import ContextProfileSerializer
@@ -14,7 +17,7 @@ class ContextProfileListCreateAPIView(ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(account=self.request.user) #security enforcement
 
-class ContextProfileDetailAPIView(RetrieveAPIView):
+class ContextProfileDetailAPIView(RetrieveUpdateDestroyAPIView):
     serializer_class = ContextProfileSerializer
     permission_classes = [IsAuthenticated]
 
