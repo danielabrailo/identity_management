@@ -16,3 +16,11 @@ class PolicySerializer(serializers.ModelSerializer):
             'can_view_linkedin',
             'can_view_social_media',
         ]
+        read_only_fields = ['id']
+
+    def validate(self, attrs):
+        if 'account' in self.initial_data:
+            raise serializers.ValidationError({
+                "account": "This field cannot be set manually."
+            })
+        return attrs
