@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Context
+from identities.models import Context
 
 
 class ContextSerializer(serializers.ModelSerializer):
