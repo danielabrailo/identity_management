@@ -1,0 +1,48 @@
+{% extends "base.html" %} {% block content %}
+<div class="container mt-4">
+  <h1>Identity Management Dashboard</h1>
+  <hr />
+  <p>Welcome <strong>{{ user.username }}</strong></p>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card mb-3">
+        <div class="card-header">Context Profiles</div>
+        <div class="card-body">
+          <h2>{{ profile_count }}</h2>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card mb-3">
+        <div class="card-header">Policies</div>
+        <div class="card-body">
+          <h2>{{ policy_count }}</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card mb-3">
+    <div class="card-header">Quick Actions</div>
+    <div class="card-body">
+      <a href="#" class="btn btn-primary"> Manage Context Profiles </a>
+      <a href="#" class="btn btn-secondary"> Manage Policies </a>
+      <a href="#" class="btn btn-success"> Disclosure Preview </a>
+      <a href="#" class="btn btn-info"> Identity Lookup </a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">Available Contexts Profiles</div>
+    <div class="card-body">
+      <ul>
+        {% for context in contexts %}
+        <li>{{ context }}</li>
+        {% empty %}
+        <li>No contexts configured yet.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
