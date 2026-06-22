@@ -1,0 +1,25 @@
+{% extends "base.html" %} {% block content %} {% load static %}
+
+<h2>Disclosure Preview</h2>
+
+<div class="card p-3">
+  <div class="mb-3">
+    <label>Context</label>
+    <select id="context" class="form-select"></select>
+  </div>
+
+  <div class="mb-3">
+    <label>Requester Type</label>
+    <select id="requester_type" class="form-select"></select>
+  </div>
+
+  <button class="btn btn-primary" onclick="previewDisclosure()">Preview</button>
+</div>
+
+<hr />
+
+<div id="preview-result"></div>
+
+{% endblock %} {% block scripts %}
+<script src="{% static 'frontend/js/disclosure-preview.js' %}" defer></script>
+{% endblock %}

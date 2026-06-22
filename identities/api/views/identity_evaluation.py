@@ -13,23 +13,32 @@ class IdentityEvaluationAPIView(APIView):
         serializer = IdentityEvaluationSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        target_user_id = serializer.validated_data["target_user_id"]
+        target_user_id=request.user.id
         context_id = serializer.validated_data["context_id"]
         requester_type_id = serializer.validated_data["requester_type_id"]
 
         #first find profile
-        profile = get_object_or_404(
-            ContextProfile,
+        profile = ContextProfile.objects.filter(
             account_id=target_user_id,
             context_id=context_id
-        )
+        ).first()
+        if not profile:
+            return Response(
+                {"error": "No profile found"},
+                status=404
+            )
+
         #find policy for this account, context and according to requester type
-        policy = get_object_or_404(
-            Policy,
+        policy = Policy.objects.filter(
             account_id=target_user_id,
             context_id=context_id,
             requester_type_id=requester_type_id
-        )
+        ).first()
+        if not policy:
+            return Response(
+                {"error": "No policy found"},
+                status=404
+            )
 
         filtered_profile = PolicyEvaluator.evaluate(
             profile,

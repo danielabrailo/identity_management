@@ -37,3 +37,10 @@ def context_management(request):
 @login_required
 def policy_management(request):
     return render(request, "policies.html")
+
+@login_required
+def disclosure_preview(request):
+    return render(
+        request,
+        "disclosure-preview.html"
+    )

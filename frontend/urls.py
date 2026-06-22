@@ -4,6 +4,7 @@ from django.contrib.auth.views import LogoutView
 from frontend.views import dashboard
 from frontend.views import context_management
 from frontend.views import policy_management
+from frontend.views import disclosure_preview
 
 urlpatterns = [
     path(
@@ -29,4 +30,9 @@ urlpatterns = [
     path("policies/", 
         policy_management, 
         name="policies"),
+    path(
+        "disclosure-preview/",
+        disclosure_preview,
+        name="disclosure-preview"
+    ),
 ]
