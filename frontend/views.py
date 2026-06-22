@@ -33,3 +33,7 @@ def dashboard(request):
 @login_required
 def context_management(request):
     return render(request, "contexts.html")
+
+@login_required
+def policy_management(request):
+    return render(request, "policies.html")

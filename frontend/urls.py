@@ -3,6 +3,7 @@ from django.contrib.auth.views import LoginView
 from django.contrib.auth.views import LogoutView
 from frontend.views import dashboard
 from frontend.views import context_management
+from frontend.views import policy_management
 
 urlpatterns = [
     path(
@@ -25,4 +26,7 @@ urlpatterns = [
         context_management, 
         name='contexts'
     ),
+    path("policies/", 
+        policy_management, 
+        name="policies"),
 ]

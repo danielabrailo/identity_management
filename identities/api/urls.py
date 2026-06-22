@@ -9,6 +9,7 @@ from identities.api.views.policy import (
     PolicyDetailAPIView
 )
 from identities.api.views.identity_evaluation import IdentityEvaluationAPIView
+from identities.api.views.requester_type import RequesterTypeListAPIView
 
 urlpatterns = [
     path('contexts/', ContextListAPIView.as_view(), name='context-list'),
@@ -17,4 +18,5 @@ urlpatterns = [
     path('policies/', PolicyListCreateAPIView.as_view(), name='policy-list-create'),
     path('policies/<int:pk>/', PolicyDetailAPIView.as_view(), name='policy-detail'),
     path('context-profiles/evaluate/', IdentityEvaluationAPIView.as_view()),
+    path("requester-types/", RequesterTypeListAPIView.as_view(), name="requester-types"),
 ]
