@@ -44,3 +44,7 @@ def disclosure_preview(request):
         request,
         "disclosure-preview.html"
     )
+
+@login_required
+def user_lookup(request):
+    return render(request, "user-lookup.html")

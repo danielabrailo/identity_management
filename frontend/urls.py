@@ -5,6 +5,7 @@ from frontend.views import dashboard
 from frontend.views import context_management
 from frontend.views import policy_management
 from frontend.views import disclosure_preview
+from frontend.views import user_lookup
 
 urlpatterns = [
     path(
@@ -35,4 +36,8 @@ urlpatterns = [
         disclosure_preview,
         name="disclosure-preview"
     ),
+    path("user-lookup/", 
+        user_lookup, 
+        name="user-lookup"
+    )
 ]

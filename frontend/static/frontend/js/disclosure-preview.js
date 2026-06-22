@@ -35,6 +35,7 @@ async function loadDropdowns() {
 }
 async function previewDisclosure() {
   const payload = {
+    target_user_id: window.LOGGED_IN_USER_ID,
     context_id: document.getElementById("context").value,
     requester_type_id: document.getElementById("requester_type").value,
   };

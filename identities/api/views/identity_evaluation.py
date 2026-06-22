@@ -13,7 +13,7 @@ class IdentityEvaluationAPIView(APIView):
         serializer = IdentityEvaluationSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        target_user_id=request.user.id
+        target_user_id = serializer.validated_data["target_user_id"]
         context_id = serializer.validated_data["context_id"]
         requester_type_id = serializer.validated_data["requester_type_id"]
 

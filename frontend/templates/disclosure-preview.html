@@ -21,5 +21,8 @@
 <div id="preview-result"></div>
 
 {% endblock %} {% block scripts %}
+<script>
+  window.LOGGED_IN_USER_ID = "{{ user.id }}";
+</script>
 <script src="{% static 'frontend/js/disclosure-preview.js' %}" defer></script>
 {% endblock %}

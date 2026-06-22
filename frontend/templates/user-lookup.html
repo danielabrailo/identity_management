@@ -1,0 +1,32 @@
+{% extends "base.html" %} {% block content %} {% load static %}
+
+<h2>User Lookup</h2>
+
+<div class="card p-3">
+  <div class="mb-3">
+    <label>Username</label>
+    <input id="search" class="form-control" placeholder="Search username..." />
+  </div>
+
+  <div class="mb-3">
+    <label
+      >Context (What is the context you are requesting the identity?)</label
+    >
+    <select id="context" class="form-select"></select>
+  </div>
+
+  <div class="mb-3">
+    <label>Requester Type (What is your role in the request)</label>
+    <select id="requester_type" class="form-select"></select>
+  </div>
+
+  <button class="btn btn-primary mt-2" onclick="searchUsers()">Search</button>
+</div>
+
+<hr />
+
+<div id="results"></div>
+
+{% endblock %} {% block scripts %}
+<script src="{% static 'frontend/js/user-lookup.js' %}" defer></script>
+{% endblock %}

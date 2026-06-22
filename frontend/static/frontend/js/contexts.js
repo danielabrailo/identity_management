@@ -64,8 +64,8 @@ async function loadProfiles() {
 }
 
 function showCreateForm() {
+  resetContextProfileForm();
   document.getElementById("form-container").style.display = "block";
-  document.getElementById("profile-id").value = "";
 }
 
 function hideForm() {
@@ -81,6 +81,8 @@ async function saveProfile() {
     phone: document.getElementById("phone").value,
     job_title: document.getElementById("job_title").value,
     linkedin: document.getElementById("linkedin").value,
+    nickname: document.getElementById("nickname").value,
+    organization: document.getElementById("organization").value,
   };
 
   if (id) {
@@ -95,6 +97,7 @@ async function saveProfile() {
 
 async function editProfile(id) {
   const data = await request(`/api/context-profiles/${id}/`);
+  resetContextProfileForm();
 
   document.getElementById("profile-id").value = data.id;
   document.getElementById("context").value = data.context;
@@ -103,6 +106,8 @@ async function editProfile(id) {
   document.getElementById("phone").value = data.phone;
   document.getElementById("job_title").value = data.job_title;
   document.getElementById("linkedin").value = data.linkedin;
+  document.getElementById("nickname").value = data.nickname;
+  document.getElementById("organization").value = data.organization;
 
   document.getElementById("form-container").style.display = "block";
 }
@@ -111,6 +116,23 @@ async function deleteProfile(id) {
   await ContextProfileAPI.remove(id);
 
   loadProfiles();
+}
+//Reset form
+function resetContextProfileForm() {
+  document.getElementById("profile-id").value = "";
+
+  document.getElementById("context").value = "";
+  document.getElementById("display_name").value = "";
+  document.getElementById("email").value = "";
+  document.getElementById("phone").value = "";
+  document.getElementById("job_title").value = "";
+  document.getElementById("linkedin").value = "";
+  document.getElementById("nickname").value = "";
+  document.getElementById("organization").value = "";
+
+  const contextSelect = document.getElementById("context");
+  contextSelect.value = "";
+  contextSelect.selectedIndex = 0;
 }
 
 loadProfiles();

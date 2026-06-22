@@ -54,6 +54,8 @@ async function savePolicy() {
     can_view_job_title: document.getElementById("job_title").checked,
     can_view_linkedin: document.getElementById("linkedin").checked,
     can_view_social_media: document.getElementById("social_media").checked,
+    can_view_nickname: document.getElementById("nickname").checked,
+    can_view_organization: document.getElementById("organization").checked,
   };
 
   if (id) {
@@ -73,6 +75,7 @@ async function savePolicy() {
 }
 
 async function editPolicy(id) {
+  resetPolicyForm();
   const p = await request(`/api/policies/${id}/`);
 
   document.getElementById("policy-id").value = p.id;
@@ -85,6 +88,8 @@ async function editPolicy(id) {
   document.getElementById("job_title").checked = p.can_view_job_title;
   document.getElementById("linkedin").checked = p.can_view_linkedin;
   document.getElementById("social_media").checked = p.can_view_social_media;
+  document.getElementById("nickname").checked = p.can_view_nickname;
+  document.getElementById("organization").checked = p.can_view_organization;
 
   showForm();
 }
@@ -102,7 +107,27 @@ function showForm() {
 }
 
 function hideForm() {
+  resetPolicyForm();
   document.getElementById("form").style.display = "none";
+}
+function resetPolicyForm() {
+  const contextSelect = document.getElementById("context");
+  contextSelect.selectedIndex = 0;
+  const requesterSelect = document.getElementById("requester_type");
+  requesterSelect.selectedIndex = 0;
+
+  document.getElementById("policy-id").value = "";
+  document.getElementById("context").value = "";
+  document.getElementById("requester_type").value = "";
+
+  document.getElementById("display_name").checked = false;
+  document.getElementById("email").checked = false;
+  document.getElementById("phone").checked = false;
+  document.getElementById("job_title").checked = false;
+  document.getElementById("linkedin").checked = false;
+  document.getElementById("social_media").checked = false;
+  document.getElementById("nickname").checked = false;
+  document.getElementById("organization").checked = false;
 }
 
 loadPolicies();

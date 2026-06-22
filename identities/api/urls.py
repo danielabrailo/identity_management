@@ -10,6 +10,7 @@ from identities.api.views.policy import (
 )
 from identities.api.views.identity_evaluation import IdentityEvaluationAPIView
 from identities.api.views.requester_type import RequesterTypeListAPIView
+from identities.api.views.user_search import UserSearchAPIView
 
 urlpatterns = [
     path('contexts/', ContextListAPIView.as_view(), name='context-list'),
@@ -19,4 +20,5 @@ urlpatterns = [
     path('policies/<int:pk>/', PolicyDetailAPIView.as_view(), name='policy-detail'),
     path('context-profiles/evaluate/', IdentityEvaluationAPIView.as_view()),
     path("requester-types/", RequesterTypeListAPIView.as_view(), name="requester-types"),
+    path("users/search/", UserSearchAPIView.as_view(), name="user-search"),
 ]
