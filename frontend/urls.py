@@ -2,6 +2,7 @@ from django.urls import path
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.views import LogoutView
 from frontend.views import dashboard
+from frontend.views import context_management
 
 urlpatterns = [
     path(
@@ -19,5 +20,9 @@ urlpatterns = [
         'dashboard/',
         dashboard,
         name='dashboard'
+    ),
+    path('contexts/', 
+        context_management, 
+        name='contexts'
     ),
 ]

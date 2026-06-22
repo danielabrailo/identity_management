@@ -3,11 +3,14 @@ from identities.models import ContextProfile
 
 
 class ContextProfileSerializer(serializers.ModelSerializer):
+    context_name = serializers.CharField(source="context.name", read_only=True)
+
     class Meta:
         model = ContextProfile
         fields = [
             'id',
             'context',
+            'context_name',
             'display_name',
             'email',
             'phone',

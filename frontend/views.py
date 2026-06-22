@@ -29,3 +29,7 @@ def dashboard(request):
             "contexts": context_names,
         },
     )
+
+@login_required
+def context_management(request):
+    return render(request, "contexts.html")
