@@ -43,3 +43,26 @@ class ContextProfileTests(APITestCase):
         #assertions
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(ContextProfile.objects.count(), 1)
+
+    #test: retrieve user's profiles
+    def test_retrieve_all_context_profiles(self):
+        #create a profile
+        ContextProfile.objects.create(
+            account=self.user,
+            context=self.context,
+            display_name="John Doe"
+        )
+        #generate url
+        url = reverse("context-profile-list-create")
+        #call endpoint
+        response = self.client.get(url)
+        #assertions
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_200_OK
+        )
+        self.assertEqual(len(response.data), 1)
+        self.assertEqual(
+            response.data[0]["display_name"],
+            "John Doe"
+        )
