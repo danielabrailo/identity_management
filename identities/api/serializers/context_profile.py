@@ -4,6 +4,18 @@ from identities.models import ContextProfile
 
 class ContextProfileSerializer(serializers.ModelSerializer):
     context_name = serializers.CharField(source="context.name", read_only=True)
+    def validate(self, attrs):
+        user = self.context["request"].user
+        context = attrs["context"]
+        #validate uniqueness constraint
+        if ContextProfile.objects.filter(
+            account=user,
+            context=context
+        ).exists():
+            raise serializers.ValidationError(
+                "A profile already exists for this context."
+            )
+        return attrs
 
     class Meta:
         model = ContextProfile
