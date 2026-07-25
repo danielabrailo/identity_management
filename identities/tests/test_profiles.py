@@ -92,7 +92,6 @@ class ContextProfileTests(APITestCase):
         #call endpoint
         response = self.client.get(url)
         #assertions
-        print(response.data)
         self.assertEqual(
             response.status_code,
             status.HTTP_200_OK
@@ -146,7 +145,6 @@ class ContextProfileTests(APITestCase):
         #reload db
         profile.refresh_from_db()
         #assertions
-        print(profile)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(profile.job_title, "Software Engineer")
 
