@@ -18,7 +18,8 @@ urlpatterns = [
     path('context-profiles/<int:pk>/', ContextProfileDetailAPIView.as_view(), name='context-profile-detail'),
     path('policies/', PolicyListCreateAPIView.as_view(), name='policy-list-create'),
     path('policies/<int:pk>/', PolicyDetailAPIView.as_view(), name='policy-detail'),
-    path('context-profiles/evaluate/', IdentityEvaluationAPIView.as_view()),
+    path('context-profiles/evaluate/', IdentityEvaluationAPIView.as_view(),
+    name="identity-evaluation"),
     path("requester-types/", RequesterTypeListAPIView.as_view(), name="requester-types"),
     path("users/search/", UserSearchAPIView.as_view(), name="user-search"),
 ]
