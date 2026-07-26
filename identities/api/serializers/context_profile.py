@@ -6,15 +6,23 @@ class ContextProfileSerializer(serializers.ModelSerializer):
     context_name = serializers.CharField(source="context.name", read_only=True)
     def validate(self, attrs):
         user = self.context["request"].user
-        context = attrs["context"]
-        #validate uniqueness constraint
-        if ContextProfile.objects.filter(
-            account=user,
-            context=context
-        ).exists():
-            raise serializers.ValidationError(
-                "A profile already exists for this context."
+        # Use the new context if given otherwise keep the current one
+        context = attrs.get(
+            "context",
+            self.instance.context if self.instance else None
+        )
+        if context:
+            queryset = ContextProfile.objects.filter(
+                account=user,
+                context=context
             )
+            #exclude the current object during updates
+            if self.instance:
+                queryset = queryset.exclude(pk=self.instance.pk)
+            if queryset.exists():
+                raise serializers.ValidationError(
+                    "A profile already exists for this context."
+                )
         return attrs
 
     class Meta:
