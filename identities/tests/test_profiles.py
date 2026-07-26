@@ -134,15 +134,9 @@ class ContextProfileTests(APITestCase):
         #call endpoint
         response = self.client.get(url)
         #assertions
-        self.assertEqual(
-            response.status_code,
-            status.HTTP_200_OK
-        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 1)
-        self.assertEqual(
-            response.data[0]["display_name"],
-            "John Doe"
-        )
+        self.assertEqual(response.data[0]["display_name"], "John Doe")
         #assert that Marie is not among the response
         display_names = [profile["display_name"] for profile in response.data]
         self.assertNotIn("Marie", display_names)
@@ -190,6 +184,33 @@ class ContextProfileTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(profile.job_title, "Software Engineer")
 
+    #test: cannot update another user's profile
+    def test_other_user_update_context_profile(self):
+        #context profiles from different users
+        profile1 = ContextProfile.objects.create(
+            account=self.user,
+            context=self.context,
+            display_name="John Doe",
+            job_title="Developer"
+        )   
+        profile2 = ContextProfile.objects.create(
+            account=self.user2,
+            context=self.context,
+            display_name="Marie",
+            job_title="Developer"
+        )        
+        #generate url
+        url = reverse(
+            "context-profile-detail",
+            kwargs={"pk": profile2.pk}
+        )
+        #update profile
+        response = self.client.patch(url, {"job_title":"Software Engineer"},
+            format="json"
+        )
+        #assertions
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
     #test: delete a profile
     def test_delete_context_profile(self):
         #context data
@@ -211,6 +232,33 @@ class ContextProfileTests(APITestCase):
         #assertions
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(ContextProfile.objects.count(),0)
+
+    #test: cannot delete another user's profile
+    def test_delete_another_user_context_profile(self):
+        #context profiles from different users
+        profile1 = ContextProfile.objects.create(
+            account=self.user,
+            context=self.context,
+            display_name="John Doe",
+            job_title="Developer"
+        )   
+        profile2 = ContextProfile.objects.create(
+            account=self.user2,
+            context=self.context,
+            display_name="Marie",
+            job_title="Developer"
+        )              
+        #generate url
+        url = reverse(
+            "context-profile-detail",
+            kwargs={"pk": profile2.pk}
+        )
+        #delete profile
+        response = self.client.delete(url, {"job_title":"Software Engineer"},
+            format="json"
+        )
+        #assertions
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     #test: unauthenticated users
     def test_update_unauthenticated_context_profile(self):
@@ -260,6 +308,63 @@ class ContextProfileTests(APITestCase):
         #assertions
         self.assertEqual(response2.status_code,  status.HTTP_400_BAD_REQUEST)
         self.assertEqual(ContextProfile.objects.count(), 1)
+
+    #test: create a policy
+    def test_create_policy(self):
+        #create requester type
+        requester = RequesterType.objects.create(name="HR")
+        #create a policy
+        data = {
+            "context": self.context.id,
+            "requester_type": requester.id,
+            "can_view_display_name": True,
+            "can_view_email": False
+        }
+        #use django's rever to generate URL based on view name
+        url = reverse("policy-list-create")
+        #call endpoint
+        response = self.client.post(
+            url,
+            data,
+            format="json"
+        )
+        #assertions
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(Policy.objects.count(), 1)
+
+    #test: cannot create a duplicate policy
+    def test_duplicate_policy(self):
+        #create requester type
+        requester = RequesterType.objects.create(name="HR")
+        #create a policy
+        data = {
+            "context": self.context.id,
+            "requester_type": requester.id,
+            "can_view_display_name": True,
+            "can_view_email": False
+        }
+        data2 = {
+            "context": self.context.id,
+            "requester_type": requester.id,
+            "can_view_display_name": True,
+            "can_view_email": False
+        }
+        #use django's rever to generate URL based on view name
+        url = reverse("policy-list-create")
+        #call endpoint
+        response1 = self.client.post(
+            url,
+            data,
+            format="json"
+        )
+        response2 = self.client.post(
+            url,
+            data2,
+            format="json"
+        )
+        #assertions
+        self.assertEqual(response2.status_code,  status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(Policy.objects.count(), 1)
 
     #test: policy evaluator
     def test_policy_evaluator(self):
