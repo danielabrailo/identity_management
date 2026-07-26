@@ -51,6 +51,48 @@ class ContextProfileTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(ContextProfile.objects.count(), 1)
 
+    #test: create an invalid context profile
+    def test_create_invalid_context_profile(self):
+        #context data
+        data = {
+            "context": 11,
+            "display_name": "John Doe",
+            "email": "johndoe@test.com",
+            "job_title": "Developer"
+        }
+        #use django's rever to generate URL based on view name
+        url = reverse("context-profile-list-create")
+        #call endpoint
+        response = self.client.post(
+            url,
+            data,
+            format="json"
+        )
+        #assertions
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(ContextProfile.objects.count(), 0)
+
+    #test: create an invalid email in context profile
+    def test_create_invalid_email(self):
+        #context data
+        data = {
+            "context": self.context.id,
+            "display_name": "John Doe",
+            "email": "not-a-valid-email",
+            "job_title": "Developer"
+        }
+        #use django's rever to generate URL based on view name
+        url = reverse("context-profile-list-create")
+        #call endpoint
+        response = self.client.post(
+            url,
+            data,
+            format="json"
+        )
+        #assertions
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(ContextProfile.objects.count(), 0)
+
     #test: retrieve all context profiles
     def test_retrieve_all_context_profiles(self):
         #create a profile
