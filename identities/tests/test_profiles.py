@@ -213,7 +213,7 @@ class ContextProfileTests(APITestCase):
         self.assertEqual(ContextProfile.objects.count(),0)
 
     #test: unauthenticated users
-    def test_update_context_profile(self):
+    def test_update_unauthenticated_context_profile(self):
         #remove authentication 
         self.client.force_authenticate(user=None)
         #create a profile
