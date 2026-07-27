@@ -332,6 +332,35 @@ class ContextProfileTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Policy.objects.count(), 1)
 
+    #test: cannot access another user's policy
+    def test_create_different_users_policy(self):
+        #create requester type
+        requester = RequesterType.objects.create(name="HR")
+        #create a second context
+        context2 = Context.objects.create(name="Academic")
+        #create policies for different users
+        Policy.objects.create(
+            account=self.user,
+            context=self.context,
+            requester_type=requester,
+            can_view_email=True
+        )
+        Policy.objects.create(
+            account=self.user2,
+            context=context2,
+            requester_type=requester,
+            can_view_email=False
+        )
+        #use django's rever to generate URL based on view name
+        url = reverse("policy-list-create")
+        #call endpoint
+        response = self.client.get(url)
+        #assertions
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 1)
+        self.assertEqual(response.data[0]["context_name"], "Professional")
+        self.assertNotEqual(response.data[0]["context_name"], "Academic")
+
     #test: cannot create a duplicate policy
     def test_duplicate_policy(self):
         #create requester type
