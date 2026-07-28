@@ -423,3 +423,83 @@ class ContextProfileTests(APITestCase):
         self.assertIsNone(result["job_title"])
         self.assertIsNone(result["linkedin"])
         self.assertIsNone(result["social_media"])
+
+    #test: policy evaluator when everything is visible
+    def test_policy_evaluator_everything(self):
+        #create a profile
+        profile = ContextProfile.objects.create(
+            account=self.user,
+            context=self.context,
+            display_name="John Doe",
+            email="test@test.com",
+            phone="123456",
+            job_title="Developer",
+            linkedin="https://linkedin.com/test",
+            nickname="Johnny",
+            social_media="@johnny",
+            organization="Best Org",
+        )
+        #create requester type
+        requester = RequesterType.objects.create(name="HR")
+        #create a policy
+        policy = Policy.objects.create(
+            account=self.user,
+            context=self.context,
+            requester_type=requester,
+            can_view_display_name=True,
+            can_view_email=True,
+            can_view_phone=True,
+            can_view_job_title=True,
+            can_view_linkedin=True,
+            can_view_social_media=True,
+            can_view_nickname=True,
+            can_view_organization=True
+        )
+        #call policy evaluator
+        result = PolicyEvaluator.evaluate(profile, policy)
+        #assertions
+        self.assertEqual(result["display_name"],"John Doe")
+        self.assertEqual(result["email"], "test@test.com")
+        self.assertEqual(result["phone"], "123456")
+        self.assertEqual(result["job_title"], "Developer")
+        self.assertEqual(result["linkedin"], "https://linkedin.com/test")
+        self.assertEqual(result["nickname"], "Johnny")
+        self.assertEqual(result["social_media"], "@johnny")
+        self.assertEqual(result["organization"], "Best Org")
+
+    #test: policy evaluator when everything is hidden
+    def test_policy_evaluator_everything_hidden(self):
+        #create a profile
+        profile = ContextProfile.objects.create(
+            account=self.user,
+            context=self.context,
+            display_name="John Doe",
+            email="test@test.com"
+        )
+        #create requester type
+        requester = RequesterType.objects.create(name="HR")
+        #create a policy
+        policy = Policy.objects.create(
+            account=self.user,
+            context=self.context,
+            requester_type=requester,
+            can_view_display_name=False,
+            can_view_email=False,
+            can_view_phone=False,
+            can_view_job_title=False,
+            can_view_linkedin=False,
+            can_view_social_media=False,
+            can_view_nickname=False,
+            can_view_organization=False
+        )
+        #call policy evaluator
+        result = PolicyEvaluator.evaluate(profile, policy)
+        #assertions
+        self.assertIsNone(result["display_name"])
+        self.assertIsNone(result["email"])
+        self.assertIsNone(result["phone"])
+        self.assertIsNone(result["job_title"])
+        self.assertIsNone(result["linkedin"])
+        self.assertIsNone(result["social_media"])
+        self.assertIsNone(result["nickname"])
+        self.assertIsNone(result["organization"])
