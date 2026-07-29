@@ -121,3 +121,75 @@ class ContextProfileTests(APITestCase):
         #assertions
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         self.assertEqual(response.data["error"], "No policy found")
+
+    #test invalid requester type
+    def test_invalid_requester_type(self):
+        #create requester
+        requester = RequesterType.objects.create(
+            name="HR"
+        )
+        #create profile
+        profile = ContextProfile.objects.create(
+            account=self.user,
+            context=self.context,
+            display_name="John Doe",
+            email="john@test.com"
+        )
+        #create policy
+        policy = Policy.objects.create(
+            account=self.user,
+            context=self.context,
+            requester_type=requester,
+            can_view_display_name=True,
+            can_view_email=False
+        )
+        #use django's rever to generate URL based on view name
+        url = reverse("identity-evaluation")
+        #call endpoint
+        response = self.client.post(
+            url,
+            {
+                "target_user_id": self.user.id,
+                "context_id": self.context.id,
+                "requester_type_id": "test"
+            },
+            format="json"
+        )
+        #assertions
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    #test invalid context
+    def test_invalid_context(self):
+        #create requester
+        requester = RequesterType.objects.create(
+            name="HR"
+        )
+        #create profile
+        profile = ContextProfile.objects.create(
+            account=self.user,
+            context=self.context,
+            display_name="John Doe",
+            email="john@test.com"
+        )
+        #create policy
+        policy = Policy.objects.create(
+            account=self.user,
+            context=self.context,
+            requester_type=requester,
+            can_view_display_name=True,
+            can_view_email=False
+        )
+        #use django's rever to generate URL based on view name
+        url = reverse("identity-evaluation")
+        #call endpoint
+        response = self.client.post(
+            url,
+            {
+                "target_user_id": self.user.id,
+                "context_id": "test",
+                "requester_type_id": requester.id
+            },
+            format="json"
+        )
+        #assertions
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
