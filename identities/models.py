@@ -83,3 +83,66 @@ class Policy(models.Model):
 
     def __str__(self):
         return f"{self.account.username} - {self.context.name} - {self.requester_type.name}"
+
+class IdentityRequest(models.Model):
+    class Status(models.TextChoices):
+        #possible states
+        PENDING = "pending", "Pending"
+        APPROVED = "approved", "Approved"
+        DENIED = "denied", "Denied"
+    #user that requests identity
+    requester = models.ForeignKey(
+        User,
+        related_name="identity_requests_sent",
+        on_delete=models.CASCADE,
+    )
+    #target useer (user being looked up)
+    target_user = models.ForeignKey(
+        User,
+        related_name="identity_requests_received",
+        on_delete=models.CASCADE,
+    )
+    #context of the lookup
+    context = models.ForeignKey(
+        Context,
+        on_delete=models.CASCADE,
+    )
+    #requester type (nullable)
+    requester_type = models.ForeignKey(
+        RequesterType,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+    )
+    #status of the request
+    status = models.CharField(
+        max_length=10,
+        choices=Status.choices,
+        default=Status.PENDING,
+    )
+    #reason the requester can add for why they are searching this user's identity
+    reason = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    decided_at = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        #show in order
+        ordering = ["-created_at"]
+        # add a constraint to prevent duplicate requests
+        constraints = [
+            models.UniqueConstraint(
+                fields=[
+                    "requester",
+                    "target_user",
+                    "context",
+                ],
+                name="unique_identity_request"
+            )
+        ]
+
+    def __str__(self):
+        return (
+            f"{self.requester.username} -> "
+            f"{self.target_user.username} "
+            f"({self.context.name})"
+        )
