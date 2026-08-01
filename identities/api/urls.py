@@ -11,6 +11,8 @@ from identities.api.views.policy import (
 from identities.api.views.identity_evaluation import IdentityEvaluationAPIView
 from identities.api.views.requester_type import RequesterTypeListAPIView
 from identities.api.views.user_search import UserSearchAPIView
+from identities.api.views.identity_request import (IdentityRequestListCreateAPIView, IdentityRequestApproveAPIView)
+
 
 urlpatterns = [
     path('contexts/', ContextListAPIView.as_view(), name='context-list'),
@@ -22,4 +24,6 @@ urlpatterns = [
     name="identity-evaluation"),
     path("requester-types/", RequesterTypeListAPIView.as_view(), name="requester-types"),
     path("users/search/", UserSearchAPIView.as_view(), name="user-search"),
+    path("identity-requests/", IdentityRequestListCreateAPIView.as_view(), name="identity-request-list-create"),
+    path("identity-requests/<int:pk>/approve/", IdentityRequestApproveAPIView.as_view(), name="identity-request-approve"),
 ]
