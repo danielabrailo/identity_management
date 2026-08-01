@@ -80,6 +80,13 @@ class IdentityRequestCreateSerializer(serializers.ModelSerializer):
 
 #decision serializer
 class IdentityRequestDecisionSerializer(serializers.ModelSerializer):
+    #validation: must choose requester type
+    def validate_requester_type(self, value):
+        if value is None:
+            raise serializers.ValidationError(
+                "A requester type must be selected"
+            )
+        return value
     #decide the requester type
     class Meta:
         model = IdentityRequest
