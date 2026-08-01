@@ -63,3 +63,27 @@ class IdentityRequestApproveAPIView(APIView):
         identity_request.save()
         #return updated response with 200 OK
         return Response(IdentityRequestSerializer(identity_request).data, status=status.HTTP_200_OK)
+
+class IdentityRequestDenyAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+    #patch
+    def patch(self, request, pk):
+        #get the identity request
+        identity_request = get_object_or_404(
+            IdentityRequest,
+            pk=pk,
+            #permissions check
+            target_user=request.user,
+        )
+        #check the status to avoid duplicating them
+        if identity_request.status != IdentityRequest.Status.PENDING:
+            return Response(
+                {"error": "This request has already been decided."},
+                status=400,
+            )
+        #update request
+        identity_request.status = IdentityRequest.Status.DENIED
+        identity_request.decided_at = timezone.now()
+        identity_request.save()
+        #return updated response with 200 OK
+        return Response(IdentityRequestSerializer(identity_request).data, status=status.HTTP_200_OK)
