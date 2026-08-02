@@ -7,7 +7,8 @@ from identities.models import (
     Context,
     ContextProfile,
     Policy,
-    RequesterType
+    RequesterType,
+    IdentityRequest
 )
 
 class ContextProfileTests(APITestCase):
@@ -46,15 +47,28 @@ class ContextProfileTests(APITestCase):
             can_view_display_name=True,
             can_view_email=False
         )
+        #create another user
+        self.requester = User.objects.create_user(
+            username="alice",
+            password="password123"
+        )
+        #authenticate
+        self.client.force_authenticate(self.requester)
+        #create identity request
+        identity_request = IdentityRequest.objects.create(
+            requester=self.requester,
+            target_user=self.user,
+            context=self.context,
+            requester_type=requester,
+            status=IdentityRequest.Status.APPROVED,
+        )
         #use django's rever to generate URL based on view name
         url = reverse("identity-evaluation")
         #call endpoint
         response = self.client.post(
             url,
             {
-                "target_user_id": self.user.id,
-                "context_id": self.context.id,
-                "requester_type_id": requester.id
+                "request_id": identity_request.id
             },
             format="json"
         )
@@ -77,15 +91,28 @@ class ContextProfileTests(APITestCase):
             can_view_display_name=True,
             can_view_email=False
         )
+        #create another user
+        self.requester = User.objects.create_user(
+            username="alice",
+            password="password123"
+        )
+        #authenticate
+        self.client.force_authenticate(self.requester)
+        #create identity request
+        identity_request = IdentityRequest.objects.create(
+            requester=self.requester,
+            target_user=self.user,
+            context=self.context,
+            requester_type=requester,
+            status=IdentityRequest.Status.APPROVED,
+        )
         #use django's rever to generate URL based on view name
         url = reverse("identity-evaluation")
         #call endpoint
         response = self.client.post(
             url,
            {
-                "target_user_id": self.user.id,
-                "context_id": self.context.id,
-                "requester_type_id": requester.id
+                "request_id": identity_request.id
             },
             format="json"
         )
@@ -93,10 +120,10 @@ class ContextProfileTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         self.assertEqual(response.data["error"], "No profile found")
 
-    #test policy not found
+    # #test policy not found
     def test_policy_not_found(self):
         #create requester
-        requester = RequesterType.objects.create(
+        requester_type = RequesterType.objects.create(
             name="HR"
         )
         #create profile
@@ -106,15 +133,28 @@ class ContextProfileTests(APITestCase):
             display_name="John Doe",
             email="john@test.com"
         )
+        #create another user
+        self.requester = User.objects.create_user(
+            username="alice",
+            password="password123"
+        )
+        #create identity request
+        identity_request = IdentityRequest.objects.create(
+            requester=self.requester,
+            target_user=self.user,
+            context=self.context,
+            requester_type=requester_type,
+            status=IdentityRequest.Status.APPROVED,
+        )
+        #authenticate
+        self.client.force_authenticate(self.requester)
         #use django's rever to generate URL based on view name
         url = reverse("identity-evaluation")
         #call endpoint
         response = self.client.post(
             url,
             {
-                "target_user_id": self.user.id,
-                "context_id": self.context.id,
-                "requester_type_id": requester.id
+                "request_id": identity_request.id
             },
             format="json"
         )
