@@ -1,0 +1,11 @@
+{% extends "base.html" %} {% block content %} {% load static %}
+
+<h2>Incoming Identity Requests</h2>
+
+<div id="requests-container"></div>
+
+{% endblock %} {% block scripts %}
+
+<script src="{% static 'frontend/js/incoming-requests.js' %}" defer></script>
+
+{% endblock %}

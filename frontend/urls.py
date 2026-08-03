@@ -6,6 +6,7 @@ from frontend.views import context_management
 from frontend.views import policy_management
 from frontend.views import disclosure_preview
 from frontend.views import user_lookup
+from frontend.views import incoming_requests
 
 urlpatterns = [
     path(
@@ -39,5 +40,9 @@ urlpatterns = [
     path("user-lookup/", 
         user_lookup, 
         name="user-lookup"
+    ),
+    path("incoming-requests/", 
+        incoming_requests, 
+        name="incoming-requests"
     )
 ]
