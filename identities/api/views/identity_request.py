@@ -44,12 +44,6 @@ class IdentityRequestApproveAPIView(APIView):
             #permissions check
             target_user=request.user,
         )
-        #check the status to avoid duplicating them
-        if identity_request.status != IdentityRequest.Status.PENDING:
-            return Response(
-                {"error": "This request has already been decided."},
-                status=400,
-            )
         #validate request
         serializer = IdentityRequestDecisionSerializer(
             identity_request,
@@ -76,13 +70,8 @@ class IdentityRequestDenyAPIView(APIView):
             #permissions check
             target_user=request.user,
         )
-        #check the status to avoid duplicating them
-        if identity_request.status != IdentityRequest.Status.PENDING:
-            return Response(
-                {"error": "This request has already been decided."},
-                status=400,
-            )
         #update request
+        identity_request.requester_type = None
         identity_request.status = IdentityRequest.Status.DENIED
         identity_request.decided_at = timezone.now()
         identity_request.save()

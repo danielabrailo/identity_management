@@ -54,35 +54,32 @@ function renderRequests(requests) {
           </td>
           <td>
           ${
-            r.status === "pending"
-              ? `
+            r.status === "approved"
+              ? r.requester_type_name
+              : `
               <select 
                   id="requester-type-${r.id}"
                   class="form-select">
                   ${renderRequesterTypes()}
               </select>
               `
-              : r.requester_type_name || "-"
           }
           </td>
           <td>
-          ${
-            r.status === "pending"
-              ? `
-              <button
-                  class="btn btn-success btn-sm"
-                  onclick="approveRequest(${r.id})">
-                  Approve
-              </button>
-              <button
-                  class="btn btn-danger btn-sm"
-                  onclick="denyRequest(${r.id})">
-                  Deny
-              </button>
-              `
-              : "-"
-          }
-          </td>
+            <button
+                class="btn btn-success btn-sm"
+                onclick="approveRequest(${r.id})"
+                ${r.status === "approved" ? "disabled" : ""}>
+                Approve
+            </button>
+        
+            <button
+                class="btn btn-danger btn-sm"
+                onclick="denyRequest(${r.id})"
+                ${r.status === "denied" ? "disabled" : ""}>
+                Deny
+            </button>      
+        </td>
       </tr>
       `;
   });

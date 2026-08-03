@@ -235,7 +235,7 @@ class IdentityRequestAPITest(APITestCase):
         self.assertIsNotNone(identity_request.decided_at)
         self.assertIsNone(identity_request.requester_type)
 
-    def test_target_user_cannot_approve_already_approved_request(self):
+    def test_target_user_can_deny_already_approved_request(self):
         #create requeter type
         requester_type = RequesterType.objects.create(
             name="Employer"
@@ -250,7 +250,7 @@ class IdentityRequestAPITest(APITestCase):
         #authenticate target user
         self.client.force_authenticate(user=self.target)
         #create url
-        url = reverse("identity-request-approve", args=[identity_request.id])
+        url = reverse("identity-request-deny", args=[identity_request.id])
         #call endpoint
         response = self.client.patch(
             url,
@@ -259,11 +259,14 @@ class IdentityRequestAPITest(APITestCase):
             },
             format="json"
         )
+        #refresh from database
+        identity_request.refresh_from_db()
         #assertions
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(response.data["error"], "This request has already been decided.")
+        self.assertEqual(identity_request.status, IdentityRequest.Status.DENIED)    
+        self.assertIsNotNone(identity_request.decided_at)
+        self.assertIsNone(identity_request.requester_type)
     
-    def test_target_user_cannot_deny_already_denied_request(self):
+    def test_target_user_can_approve_already_denied_request(self):
         #create requeter type
         requester_type = RequesterType.objects.create(
             name="Employer"
@@ -278,7 +281,7 @@ class IdentityRequestAPITest(APITestCase):
         #authenticate target user
         self.client.force_authenticate(user=self.target)
         #create url
-        url = reverse("identity-request-deny", args=[identity_request.id])
+        url = reverse("identity-request-approve", args=[identity_request.id])
         #call endpoint
         response = self.client.patch(
             url,
@@ -287,9 +290,12 @@ class IdentityRequestAPITest(APITestCase):
             },
             format="json"
         )
+        #refresh from database
+        identity_request.refresh_from_db()
         #assertions
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(response.data["error"], "This request has already been decided.")
+        self.assertEqual(identity_request.status, IdentityRequest.Status.APPROVED)
+        self.assertEqual(identity_request.requester_type, requester_type)
+        self.assertIsNotNone(identity_request.decided_at)
 
     def test_pending_request_cannot_evaluate_identity(self):
         #create requester type
