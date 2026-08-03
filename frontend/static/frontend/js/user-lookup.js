@@ -31,8 +31,8 @@ function renderUsers(users) {
                 <td>
                     <button
                         class="btn btn-sm btn-primary"
-                        onclick="goToDisclosure(${u.id})">
-                        Preview Identity
+                        onclick="submitRequest(${u.id})">
+                        Submit Request
                     </button>
                 </td>
             </tr>
@@ -45,12 +45,8 @@ function renderUsers(users) {
 }
 async function loadDropdowns() {
   const contexts = await request("/api/contexts/");
-
-  const requesterTypes = await request("/api/requester-types/");
-
   const contextSelect = document.getElementById("context");
-  const requesterSelect = document.getElementById("requester_type");
-
+  // Load contexts
   contexts.forEach((c) => {
     contextSelect.innerHTML += `
               <option value="${c.id}">
@@ -58,44 +54,25 @@ async function loadDropdowns() {
               </option>
           `;
   });
-
-  requesterTypes.forEach((r) => {
-    requesterSelect.innerHTML += `
-              <option value="${r.id}">
-                  ${r.name}
-              </option>
-          `;
-  });
 }
-async function goToDisclosure(userId) {
+async function submitRequest(userId) {
+  //Payload to send
   const payload = {
-    target_user_id: userId,
-    context_id: document.getElementById("context").value,
-    requester_type_id: document.getElementById("requester_type").value,
+    target_user: userId,
+    context: document.getElementById("context").value,
+    reason: document.getElementById("reason").value,
   };
-  const result = await request("/api/context-profiles/evaluate/", {
+  //send request
+  await request("/api/identity-requests/", {
     method: "POST",
     body: JSON.stringify(payload),
   });
-  renderResult(result);
-}
-function renderResult(data) {
-  let html = "<h4>User Information</h4>";
-  html += "<table class='table'>";
-
-  Object.entries(data).forEach(([key, value]) => {
-    if (!value || value === "") {
-      return;
-    }
-    html += `
-                  <tr>
-                      <th>${labels[key] || key}</th>
-                      <td>${value}</td>
-                  </tr>
-              `;
-  });
-
-  html += "</table>";
-  document.getElementById("results").innerHTML = html;
+  //Confirmation
+  document.getElementById("results").innerHTML = `
+    <div class="alert alert-success mt-3">
+        <strong>Request submitted!</strong><br>
+        The target user has been notified and can now approve or deny your request.
+    </div>
+  `;
 }
 loadDropdowns();
