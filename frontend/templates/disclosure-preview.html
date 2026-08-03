@@ -1,19 +1,15 @@
 {% extends "base.html" %} {% block content %} {% load static %}
 
-<h2>Disclosure Preview</h2>
+<h2>View requested identity data</h2>
 
 <div class="card p-3">
   <div class="mb-3">
-    <label>Context</label>
-    <select id="context" class="form-select"></select>
+    <label>Approved Identity Requests</label>
+    <select id="identity_request" class="form-select"></select>
   </div>
-
-  <div class="mb-3">
-    <label>Requester Type</label>
-    <select id="requester_type" class="form-select"></select>
-  </div>
-
-  <button class="btn btn-primary" onclick="previewDisclosure()">Preview</button>
+  <button class="btn btn-primary" onclick="previewDisclosure()">
+    View Identity
+  </button>
 </div>
 
 <hr />
@@ -21,8 +17,5 @@
 <div id="preview-result"></div>
 
 {% endblock %} {% block scripts %}
-<script>
-  window.LOGGED_IN_USER_ID = "{{ user.id }}";
-</script>
 <script src="{% static 'frontend/js/disclosure-preview.js' %}" defer></script>
 {% endblock %}

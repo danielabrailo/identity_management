@@ -8,47 +8,49 @@ const labels = {
   social_media: "Social Media",
 };
 
-async function loadDropdowns() {
-  const contexts = await request("/api/contexts/");
-
-  const requesterTypes = await request("/api/requester-types/");
-
-  const contextSelect = document.getElementById("context");
-
-  const requesterSelect = document.getElementById("requester_type");
-
-  contexts.forEach((c) => {
-    contextSelect.innerHTML += `
-            <option value="${c.id}">
-                ${c.name}
-            </option>
-        `;
-  });
-
-  requesterTypes.forEach((r) => {
-    requesterSelect.innerHTML += `
-            <option value="${r.id}">
-                ${r.name}
-            </option>
-        `;
+async function loadRequests() {
+  //requests
+  const requests = await request("/api/identity-requests/approved/");
+  // fill in the select
+  const select = document.getElementById("identity_request");
+  //If there isn't any approved request yet
+  if (requests.length === 0) {
+    document.getElementById("preview-result").innerHTML = `
+      <div class="alert alert-info mt-3">
+        You do not have any approved identity requests yet
+      </div>
+    `;
+    select.disabled = true;
+    return;
+  }
+  // if there are requests
+  requests.forEach((r) => {
+    select.innerHTML += `
+      <option value="${r.id}">
+        ${r.target_username} - ${r.context_name}
+      </option>
+    `;
   });
 }
 async function previewDisclosure() {
+  const requestId = document.getElementById("identity_request").value;
+  if (!requestId) {
+    return;
+  }
+  //payload
   const payload = {
-    target_user_id: window.LOGGED_IN_USER_ID,
-    context_id: document.getElementById("context").value,
-    requester_type_id: document.getElementById("requester_type").value,
+    request_id: requestId,
   };
-
+  // call endpoint
   const result = await request("/api/context-profiles/evaluate/", {
     method: "POST",
     body: JSON.stringify(payload),
   });
-
+  //show results
   renderResult(result);
 }
 function renderResult(data) {
-  let html = "<h4>Visible Information</h4>";
+  let html = "<h4>Disclosed Information</h4>";
   html += "<table class='table'>";
 
   Object.entries(data).forEach(([key, value]) => {
@@ -66,4 +68,4 @@ function renderResult(data) {
   html += "</table>";
   document.getElementById("preview-result").innerHTML = html;
 }
-loadDropdowns();
+loadRequests();

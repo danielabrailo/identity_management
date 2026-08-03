@@ -3,6 +3,7 @@ from rest_framework.permissions import IsAuthenticated
 from django.utils import timezone
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
+from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework import status
 from identities.models import IdentityRequest
@@ -87,3 +88,13 @@ class IdentityRequestDenyAPIView(APIView):
         identity_request.save()
         #return updated response with 200 OK
         return Response(IdentityRequestSerializer(identity_request).data, status=status.HTTP_200_OK)
+
+class ApprovedIdentityRequestListAPIView(ListAPIView):
+    serializer_class = IdentityRequestSerializer
+    permission_classes = [IsAuthenticated]
+    #get approved requests
+    def get_queryset(self):
+        return IdentityRequest.objects.filter(
+            requester=self.request.user,
+            status=IdentityRequest.Status.APPROVED
+        )
