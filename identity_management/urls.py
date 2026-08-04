@@ -19,6 +19,7 @@ from django.urls import path, include
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 urlpatterns = [
+    path("", include("accounts.urls")),
     path('', include('frontend.urls')),
     path('admin/', admin.site.urls),
     path('api/', include('identities.api.urls')),

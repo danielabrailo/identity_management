@@ -1,6 +1,13 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from identities.models import ContextProfile, Policy
+
+def home(request):
+    #if user is authenticated, redirect to dashboard
+    if request.user.is_authenticated:
+        return redirect("dashboard")
+    #if not, to login screen
+    return redirect("login")
 
 @login_required
 def dashboard(request):
