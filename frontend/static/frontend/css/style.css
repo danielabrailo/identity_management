@@ -148,3 +148,113 @@ h2 {
 .nav-link.active {
   color: #4f46e5 !important;
 }
+
+/* Context Profiles Screen */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.profile-form {
+  padding: 32px;
+}
+
+.profile-form label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #374151;
+}
+
+.profile-form input,
+.profile-form select {
+  border-radius: 10px;
+}
+
+.profile-form h3 {
+  font-weight: 700;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 0.15rem rgba(79, 70, 229, 0.2);
+}
+
+/* PROFILE CARDS */
+.profile-card {
+  background: white;
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+  transition: 0.25s;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.profile-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.08);
+}
+
+.profile-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.profile-card h4 {
+  margin: 0;
+  font-weight: 700;
+}
+
+.profile-card p {
+  margin: 0;
+  color: #6b7280;
+}
+
+.profile-card p i {
+  width: 22px;
+  color: #4f46e5;
+}
+
+.context-badge {
+  background: #eef2ff;
+  color: #4f46e5;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.profile-actions {
+  margin-top: auto;
+  display: flex;
+  gap: 12px;
+  padding-top: 18px;
+}
+
+.empty-state {
+  background: white;
+  border-radius: 18px;
+  text-align: center;
+  padding: 60px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+}
+
+.empty-state i {
+  font-size: 4rem;
+  color: #4f46e5;
+}
+
+.empty-state h4 {
+  margin-top: 20px;
+}

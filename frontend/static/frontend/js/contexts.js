@@ -40,31 +40,133 @@ async function loadContexts() {
 
 //load the profiles and attach to HTML
 async function loadProfiles() {
+  //Get the data
   const data = await ContextProfileAPI.list();
-
-  let html = "<table class='table'>";
-  html += "<tr><th>Context</th><th>Display Name</th><th>Actions</th></tr>";
-
-  data.forEach((p) => {
-    html += `
-            <tr>
-                <td>${p.context_name}</td>
-                <td>${p.display_name}</td>
-                <td>
-                    <button class="btn btn-sm btn-primary" onclick="editProfile(${p.id})">Edit</button>
-                    <button class="btn btn-sm btn-danger" onclick="deleteProfile(${p.id})">Delete</button>
-                </td>
-            </tr>
-        `;
-  });
-
-  html += "</table>";
-
+  //build the HTML
+  let html = "";
+  //If empty
+  if (data.length === 0) {
+    html = `
+      <div class="empty-state">
+        <i class="bi bi-person-vcard"></i>
+        <h4>No Context Profiles Yet</h4>
+        <p>Create your first profile to start managing your digital identities.</p>
+      </div>
+    `;
+  } else {
+    data.forEach((p) => {
+      //Build a card HTML with the data of each profile
+      html += `
+        <div class="profile-card">          
+          <div class="profile-card-header">
+            <span class="context-badge">
+              ${getContextIcon(p.context_name)} ${p.context_name}
+            </span>
+          </div>
+          <h4>${p.display_name || "Unnamed Profile"}</h4>
+          ${
+            p.job_title
+              ? `
+              <p>
+                <i class="bi bi-briefcase"></i>
+                ${p.job_title}
+              </p>
+            `
+              : ""
+          }
+          ${
+            p.organization
+              ? `
+              <p>
+                <i class="bi bi-building"></i>
+                ${p.organization}
+              </p>
+            `
+              : ""
+          }
+          ${
+            p.email
+              ? `
+              <p>
+                <i class="bi bi-envelope"></i>
+                ${p.email}
+              </p>
+            `
+              : ""
+          }
+          ${
+            p.phone
+              ? `
+              <p>
+                <i class="bi bi-telephone"></i>
+                ${p.phone}
+              </p>
+            `
+              : ""
+          }
+          ${
+            p.nickname
+              ? `
+                <p>
+                  <i class="bi bi-person"></i>
+                  ${p.nickname}
+                </p>
+              `
+              : ""
+          }
+          
+          ${
+            p.linkedin
+              ? `
+                <p>
+                  <i class="bi bi-linkedin"></i>
+                  <a href="${p.linkedin}" target="_blank">LinkedIn</a>
+                </p>
+              `
+              : ""
+          }
+          <div class="profile-actions">
+            <button
+              class="btn btn-primary btn-sm"
+              onclick="editProfile(${p.id})">
+              <i class="bi bi-pencil"></i>
+              Edit
+            </button>
+            <button
+              class="btn btn-outline-danger btn-sm"
+              onclick="deleteProfile(${p.id})">
+              <i class="bi bi-trash"></i>
+              Delete
+            </button>
+          </div>
+        </div>
+      `;
+    });
+  }
   document.getElementById("context-list").innerHTML = html;
+}
+
+function getContextIcon(context) {
+  //get icons for each context for easy identification
+  switch (context.toLowerCase()) {
+    case "professional":
+      return "💼";
+    case "academic":
+      return "🎓";
+    case "social":
+      return "🎉";
+    case "legal":
+      return "⚖️";
+    case "online":
+      return "🌐";
+    default:
+      return "🪪";
+  }
 }
 
 function showCreateForm() {
   resetContextProfileForm();
+  document.getElementById("form-title").textContent = "Create Profile";
   document.getElementById("form-container").style.display = "block";
 }
 
@@ -99,6 +201,7 @@ async function editProfile(id) {
   const data = await request(`/api/context-profiles/${id}/`);
   resetContextProfileForm();
 
+  document.getElementById("form-title").textContent = "Edit Profile";
   document.getElementById("profile-id").value = data.id;
   document.getElementById("context").value = data.context;
   document.getElementById("display_name").value = data.display_name;

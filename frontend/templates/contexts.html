@@ -1,51 +1,78 @@
 {% extends "base.html" %} {% block content %} {% load static %}
+<!-- Screen header -->
+<div class="page-header">
+  <div>
+    <h1>Context Profiles</h1>
+    <p class="text-muted">
+      Create different identity profiles for each context of your life.
+    </p>
+  </div>
+  <!-- Action btn -->
+  <button class="btn btn-primary" onclick="showCreateForm()">
+    <i class="bi bi-plus-circle"></i>
+    New Profile
+  </button>
+</div>
 
-<h2>Context Profiles</h2>
-<button class="btn btn-primary mb-3" onclick="showCreateForm()">
-  Create Context Profile
-</button>
-
-<div id="context-list"></div>
+<!-- List of profiles -->
+<div id="context-list" class="profile-grid"></div>
 
 <!-- create profile form -->
-<div id="form-container" style="display: none" class="card p-3 mt-3">
-  <h5 id="form-title">Create Profile</h5>
+<div id="form-container" class="card profile-form mt-4" style="display: none">
+  <h3 id="form-title" class="mb-4">Create Profile</h3>
   <input type="hidden" id="profile-id" />
-  <div class="mb-2">
-    <label>Context ID</label>
-    <select id="context" class="form-select"></select>
-  </div>
-  <div class="mb-2">
-    <label>Display Name</label>
-    <input id="display_name" class="form-control" />
-  </div>
-  <div class="mb-2">
-    <label>Email</label>
-    <input id="email" class="form-control" />
-  </div>
-  <div class="mb-2">
-    <label>Phone</label>
-    <input id="phone" class="form-control" />
-  </div>
-  <div class="mb-2">
-    <label>Job Title</label>
-    <input id="job_title" class="form-control" />
-  </div>
-  <div class="mb-2">
-    <label>LinkedIn</label>
-    <input id="linkedin" class="form-control" />
-  </div>
-  <div class="mb-2">
-    <label>Nickname</label>
-    <input id="nickname" class="form-control" />
-  </div>
-  <div class="mb-2">
-    <label>Organization</label>
-    <input id="organization" class="form-control" />
+
+  <div class="row g-3">
+    <div class="col-md-6">
+      <label class="form-label">Context</label>
+      <select id="context" class="form-select"></select>
+    </div>
+
+    <div class="col-md-6">
+      <label class="form-label">Display Name</label>
+      <input id="display_name" class="form-control" />
+    </div>
+
+    <div class="col-md-6">
+      <label class="form-label">Email</label>
+      <input id="email" class="form-control" />
+    </div>
+
+    <div class="col-md-6">
+      <label class="form-label">Phone</label>
+      <input id="phone" class="form-control" />
+    </div>
+
+    <div class="col-md-6">
+      <label class="form-label">Job Title</label>
+      <input id="job_title" class="form-control" />
+    </div>
+
+    <div class="col-md-6">
+      <label class="form-label">LinkedIn</label>
+      <input id="linkedin" class="form-control" />
+    </div>
+
+    <div class="col-md-6">
+      <label class="form-label">Nickname</label>
+      <input id="nickname" class="form-control" />
+    </div>
+
+    <div class="col-md-6">
+      <label class="form-label">Organization</label>
+      <input id="organization" class="form-control" />
+    </div>
   </div>
 
-  <button class="btn btn-success" onclick="saveProfile()">Save</button>
-  <button class="btn btn-secondary" onclick="hideForm()">Cancel</button>
+  <!-- Action Btns -->
+  <div class="d-flex justify-content-end gap-2 mt-4">
+    <button class="btn btn-secondary" onclick="hideForm()">Cancel</button>
+
+    <button class="btn btn-primary" onclick="saveProfile()">
+      <i class="bi bi-check-circle"></i>
+      Save Profile
+    </button>
+  </div>
 </div>
 {% endblock %} {% block scripts %}
 <script src="{% static 'frontend/js/contexts.js' %}" defer></script>
