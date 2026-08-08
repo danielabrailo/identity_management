@@ -569,3 +569,146 @@ h2 {
 .disclosure-item.visible .disclosure-status {
   color: #10b981;
 }
+
+/* Identity request */
+.identity-request-card {
+  padding: 28px;
+}
+
+.request-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.request-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: #eef2ff;
+  color: #4f46e5;
+  font-size: 1.3rem;
+}
+
+.request-header h4 {
+  margin: 0 0 4px;
+  font-weight: 700;
+}
+
+.request-header p {
+  margin: 0;
+  color: #6b7280;
+}
+
+.request-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+
+.search-results-header {
+  margin-bottom: 16px;
+}
+
+.search-results-header h3 {
+  margin: 0 0 4px;
+  font-weight: 700;
+}
+
+.search-results-header p {
+  margin: 0;
+  color: #6b7280;
+}
+
+.user-results {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.user-result-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  transition: 0.2s;
+}
+
+.user-result-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.07);
+}
+
+.user-result-info {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.user-avatar {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #eef2ff;
+  color: #4f46e5;
+  font-size: 1.1rem;
+}
+
+.user-result-label {
+  display: block;
+  font-size: 0.75rem;
+  color: #6b7280;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.user-result-info h5 {
+  margin: 2px 0 0;
+  font-weight: 600;
+}
+
+.request-success {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  border-radius: 14px;
+  color: #065f46;
+}
+
+.success-icon {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #10b981;
+  color: white;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.request-success h4 {
+  margin: 0 0 4px;
+  font-weight: 700;
+}
+
+.request-success p {
+  margin: 0;
+  color: #047857;
+}

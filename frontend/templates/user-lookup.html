@@ -1,36 +1,77 @@
 {% extends "base.html" %} {% block content %} {% load static %}
 
-<h2>Identity Request</h2>
-<!-- Username to search for -->
-<div class="card p-3">
-  <div class="mb-3">
-    <label>Username</label>
-    <input id="search" class="form-control" placeholder="Search username..." />
+<div class="page-header">
+  <div>
+    <!-- Page title -->
+    <h1>Request Identity</h1>
+    <!-- Explanation -->
+    <p class="text-muted">
+      Request access to another user's identity in a specific context.
+    </p>
   </div>
-  <!-- Context of request -->
+</div>
+
+<!-- Request form -->
+<div class="card identity-request-card">
+  <div class="request-header">
+    <div class="request-icon">
+      <i class="bi bi-person-badge"></i>
+    </div>
+    <div>
+      <h4>Identity Request</h4>
+      <p>
+        Search for a user and specify why you need access to their identity.
+      </p>
+    </div>
+  </div>
+
+  <!-- Username -->
   <div class="mb-3">
-    <label
-      >Context (What is the context you are requesting the identity?)</label
-    >
+    <label for="search" class="form-label"> Username </label>
+    <div class="input-group">
+      <span class="input-group-text">
+        <i class="bi bi-search"></i>
+      </span>
+      <input
+        id="search"
+        class="form-control"
+        placeholder="Search username..."
+      />
+    </div>
+  </div>
+
+  <!-- Context -->
+  <div class="mb-3">
+    <label for="context" class="form-label"> Context </label>
     <select id="context" class="form-select"></select>
+    <div class="form-text">
+      Choose the context in which you need this identity.
+    </div>
   </div>
-  <!-- Reason to request identity -->
+
+  <!-- Reason -->
   <div class="mb-3">
-    <label>Reason for Request</label>
+    <label for="reason" class="form-label"> Reason for Request </label>
     <textarea
       id="reason"
       class="form-control"
       rows="3"
       placeholder="Briefly explain why you are requesting this identity"
-    ></textarea>
+    >
+    </textarea>
   </div>
+
   <!-- Button -->
-  <button class="btn btn-primary mt-2" onclick="searchUsers()">Search</button>
+  <div class="request-form-actions">
+    <button class="btn btn-primary" onclick="searchUsers()">
+      <i class="bi bi-search"></i>
+      Search Users
+    </button>
+  </div>
 </div>
 
-<hr />
-
-<div id="results"></div>
+<!-- Search results -->
+<div id="results" class="mt-4 mb-3"></div>
 
 {% endblock %} {% block scripts %}
 <script src="{% static 'frontend/js/user-lookup.js' %}" defer></script>
