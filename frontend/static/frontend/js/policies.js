@@ -1,23 +1,92 @@
 async function loadPolicies() {
+  //Get data
   const data = await request("/api/policies/");
 
-  let html = "<table class='table'>";
-  html += "<tr><th>Context</th><th>Requester</th><th>Actions</th></tr>";
-
-  data.forEach((p) => {
-    html += `
-            <tr>
-                <td>${p.context_name}</td>
-                <td>${p.requester_type_name}</td>
-                <td>
-                    <button class="btn btn-sm btn-primary" onclick="editPolicy(${p.id})">Edit</button>
-                    <button class="btn btn-sm btn-danger" onclick="deletePolicy(${p.id})">Delete</button>
-                </td>
-            </tr>
-        `;
-  });
-
-  html += "</table>";
+  //build HTML
+  let html = "";
+  //if no data
+  if (data.length === 0) {
+    html = `
+      <div class="empty-state">
+        <i class="bi bi-shield-check"></i>
+        <h4>No Policies Yet</h4>
+        <p>
+          Create a policy to control which information can be shared.
+        </p>
+      </div>
+    `;
+  } else {
+    //Parse through data
+    data.forEach((p) => {
+      const permissions = [];
+      if (p.can_view_display_name) permissions.push("Display Name");
+      if (p.can_view_email) permissions.push("Email");
+      if (p.can_view_phone) permissions.push("Phone");
+      if (p.can_view_job_title) permissions.push("Job Title");
+      if (p.can_view_linkedin) permissions.push("LinkedIn");
+      if (p.can_view_social_media) permissions.push("Social Media");
+      if (p.can_view_nickname) permissions.push("Nickname");
+      if (p.can_view_organization) permissions.push("Organization");
+      //Build HTML with each permission in a card style
+      html += `
+        <div class="policy-card">
+          <div class="policy-card-header">
+            <div>
+              <span class="policy-context">
+                <i class="bi bi-shield-check"></i>
+                ${p.context_name}
+              </span>
+              <h4>
+              <span class="subtitle">Requester type: </span>
+                ${p.requester_type_name}
+              </h4>
+            </div>
+          </div>
+          <div class="policy-divider"></div>
+          <div class="policy-permissions">
+            <span class="permissions-label">
+              Information shared
+            </span>
+            <div class="permission-tags">
+              ${
+                permissions.length > 0
+                  ? permissions
+                      .map(
+                        (permission) => `
+                          <span class="permission-tag">
+                            <i class="bi bi-check-circle-fill"></i>
+                            ${permission}
+                          </span>
+                        `
+                      )
+                      .join("")
+                  : `
+                      <span class="permission-tag denied">
+                        <i class="bi bi-eye-slash"></i>
+                        No information shared
+                      </span>
+                    `
+              }
+            </div>
+          </div>
+          <div class="policy-actions">
+            <button
+              class="btn btn-primary btn-sm"
+              onclick="editPolicy(${p.id})">
+              <i class="bi bi-pencil"></i>
+              Edit
+            </button>
+            <button
+              class="btn btn-outline-danger btn-sm"
+              onclick="deletePolicy(${p.id})">
+              <i class="bi bi-trash"></i>
+              Delete
+            </button>
+          </div>
+        </div>
+      `;
+    });
+  }
 
   document.getElementById("policy-list").innerHTML = html;
 }
@@ -104,6 +173,11 @@ async function deletePolicy(id) {
 
 function showForm() {
   document.getElementById("form").style.display = "block";
+  //change form title according to if it's editing or a new one
+  document.getElementById("policy-form-title").textContent =
+    document.getElementById("policy-id").value
+      ? "Edit Policy"
+      : "Create Policy";
 }
 
 function hideForm() {

@@ -1,73 +1,147 @@
 {% extends "base.html" %} {% block content %} {% load static %}
 
-<h2>Policy Management</h2>
-<button class="btn btn-primary mb-3" onclick="showForm()">Create Policy</button>
-
-<div id="policy-list"></div>
+<div class="page-header">
+  <div>
+    <!-- Title -->
+    <h1>Privacy Policies</h1>
+    <!-- Explanation -->
+    <p class="text-muted">
+      Control what information is shared with different types of requesters.
+    </p>
+  </div>
+  <!-- Btn to create new policy -->
+  <button class="btn btn-primary" onclick="showForm()">
+    <i class="bi bi-plus-circle"></i>
+    New Policy
+  </button>
+</div>
 
 <!-- form -->
-<div id="form" class="card p-3 mt-3" style="display: none">
+<div id="form" class="card policy-form mt-4" style="display: none">
+  <div class="form-header">
+    <div>
+      <h3 id="policy-form-title">Create Policy</h3>
+      <p>
+        Choose who can access this profile and what information they can see.
+      </p>
+    </div>
+  </div>
   <input type="hidden" id="policy-id" />
 
-  <div class="mb-2">
-    <label>Context</label>
-    <select id="context" class="form-select"></select>
+  <div class="row g-3">
+    <!-- Choose context -->
+    <div class="col-md-6">
+      <label class="form-label"> Context </label>
+      <select id="context" class="form-select"></select>
+    </div>
+    <!-- Choose requester type -->
+    <div class="col-md-6">
+      <label class="form-label"> Requester Type </label>
+      <select id="requester_type" class="form-select"></select>
+    </div>
   </div>
-
-  <div class="mb-2">
-    <label>Requester Type</label>
-    <select id="requester_type" class="form-select"></select>
-  </div>
-
-  <hr />
 
   <!-- visibility rules -->
-  <h5>Visibility Rules</h5>
-  <div class="form-check">
-    <input type="checkbox" id="display_name" class="form-check-input" />
-    <label class="form-check-label">Display Name</label>
+  <div class="visibility-section">
+    <div class="section-heading">
+      <div>
+        <h5>
+          <i class="bi bi-eye"></i>
+          Information Visibility
+        </h5>
+        <!-- Explanation -->
+        <p>Select the information this requester is allowed to see.</p>
+      </div>
+    </div>
+    <!-- Checkboxes -->
+    <div class="visibility-grid">
+      <!-- Display name -->
+      <label class="permission-item">
+        <input type="checkbox" id="display_name" class="form-check-input" />
+        <span class="permission-icon">
+          <i class="bi bi-person"></i>
+        </span>
+        <span class="permission-name"> Display Name </span>
+      </label>
+
+      <!-- Email -->
+      <label class="permission-item">
+        <input type="checkbox" id="email" class="form-check-input" />
+        <span class="permission-icon">
+          <i class="bi bi-envelope"></i>
+        </span>
+        <span class="permission-name"> Email </span>
+      </label>
+
+      <!-- Phone -->
+      <label class="permission-item">
+        <input type="checkbox" id="phone" class="form-check-input" />
+        <span class="permission-icon">
+          <i class="bi bi-telephone"></i>
+        </span>
+        <span class="permission-name"> Phone </span>
+      </label>
+
+      <!-- Job Title -->
+      <label class="permission-item">
+        <input type="checkbox" id="job_title" class="form-check-input" />
+        <span class="permission-icon">
+          <i class="bi bi-briefcase"></i>
+        </span>
+        <span class="permission-name"> Job Title </span>
+      </label>
+
+      <!-- Linkedin -->
+      <label class="permission-item">
+        <input type="checkbox" id="linkedin" class="form-check-input" />
+        <span class="permission-icon">
+          <i class="bi bi-linkedin"></i>
+        </span>
+        <span class="permission-name"> LinkedIn </span>
+      </label>
+
+      <!-- Social media -->
+      <label class="permission-item">
+        <input type="checkbox" id="social_media" class="form-check-input" />
+        <span class="permission-icon">
+          <i class="bi bi-share"></i>
+        </span>
+        <span class="permission-name"> Social Media </span>
+      </label>
+
+      <!-- Nickname -->
+      <label class="permission-item">
+        <input type="checkbox" id="nickname" class="form-check-input" />
+        <span class="permission-icon">
+          <i class="bi bi-person-heart"></i>
+        </span>
+        <span class="permission-name"> Nickname </span>
+      </label>
+
+      <!-- Organization -->
+      <label class="permission-item">
+        <input type="checkbox" id="organization" class="form-check-input" />
+        <span class="permission-icon">
+          <i class="bi bi-building"></i>
+        </span>
+        <span class="permission-name"> Organization </span>
+      </label>
+    </div>
+
+    <hr />
+
+    <!-- Save & cancel btns -->
+    <div class="form-actions">
+      <button class="btn btn-secondary" onclick="hideForm()">Cancel</button>
+      <button class="btn btn-primary" onclick="savePolicy()">
+        <i class="bi bi-check-circle"></i>
+        Save Policy
+      </button>
+    </div>
   </div>
-
-  <div class="form-check">
-    <input type="checkbox" id="email" class="form-check-input" />
-    <label class="form-check-label">Email</label>
-  </div>
-
-  <div class="form-check">
-    <input type="checkbox" id="phone" class="form-check-input" />
-    <label class="form-check-label">Phone</label>
-  </div>
-
-  <div class="form-check">
-    <input type="checkbox" id="job_title" class="form-check-input" />
-    <label class="form-check-label">Job Title</label>
-  </div>
-
-  <div class="form-check">
-    <input type="checkbox" id="linkedin" class="form-check-input" />
-    <label class="form-check-label">LinkedIn</label>
-  </div>
-
-  <div class="form-check">
-    <input type="checkbox" id="social_media" class="form-check-input" />
-    <label class="form-check-label">Social Media</label>
-  </div>
-
-  <div class="form-check">
-    <input type="checkbox" id="nickname" class="form-check-input" />
-    <label class="form-check-label">Nickname</label>
-  </div>
-
-  <div class="form-check">
-    <input type="checkbox" id="organization" class="form-check-input" />
-    <label class="form-check-label">Organization</label>
-  </div>
-
-  <hr />
-
-  <button class="btn btn-success" onclick="savePolicy()">Save</button>
-  <button class="btn btn-secondary" onclick="hideForm()">Cancel</button>
 </div>
+
+<div id="policy-list" class="policy-grid"></div>
 
 {% endblock %} {% block scripts %}
 <script src="{% static 'frontend/js/policies.js' %}" defer></script>

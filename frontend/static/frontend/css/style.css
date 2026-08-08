@@ -258,3 +258,184 @@ h2 {
 .empty-state h4 {
   margin-top: 20px;
 }
+
+/* POLICY CARDS */
+.policy-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 24px;
+}
+
+.policy-card {
+  background: white;
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+  transition: 0.25s;
+  display: flex;
+  flex-direction: column;
+}
+
+.policy-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.08);
+}
+
+.policy-context {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #eef2ff;
+  color: #4f46e5;
+  padding: 7px 12px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.policy-card h4 {
+  margin-top: 14px;
+  margin-bottom: 0;
+  font-weight: 700;
+}
+
+.policy-divider {
+  height: 1px;
+  background: #e5e7eb;
+  margin: 20px 0;
+}
+
+.permissions-label {
+  display: block;
+  font-size: 0.85rem;
+  color: #6b7280;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.permission-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.permission-tag {
+  background: #ecfdf5;
+  color: #047857;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.permission-tag i {
+  margin-right: 3px;
+}
+
+.permission-tag.denied {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+.policy-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 24px;
+}
+
+/* Policy form */
+.policy-form {
+  padding: 32px;
+}
+
+.form-header h3 {
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.form-header p {
+  color: #6b7280;
+  margin-bottom: 28px;
+}
+
+.visibility-section {
+  margin-top: 30px;
+}
+
+.section-heading {
+  margin-bottom: 18px;
+}
+
+.section-heading h5 {
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.section-heading h5 i {
+  color: #4f46e5;
+  margin-right: 6px;
+}
+
+.section-heading p {
+  color: #6b7280;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* Permissions tiles */
+.visibility-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.permission-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.permission-item:hover {
+  border-color: #c7d2fe;
+  background: #f9faff;
+}
+
+.permission-item:has(input:checked) {
+  border-color: #818cf8;
+  background: #eef2ff;
+}
+
+.permission-item input {
+  margin: 0;
+}
+
+.permission-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+.permission-item:has(input:checked) .permission-icon {
+  background: #4f46e5;
+  color: white;
+}
+
+.permission-name {
+  font-weight: 500;
+}
+
+.subtitle {
+  color: #7d61ce;
+  opacity: 0.7;
+}
