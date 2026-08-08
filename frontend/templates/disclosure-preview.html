@@ -1,20 +1,47 @@
 {% extends "base.html" %} {% block content %} {% load static %}
 
-<h2>View requested identity data</h2>
-
-<div class="card p-3">
-  <div class="mb-3">
-    <label>Approved Identity Requests</label>
-    <select id="identity_request" class="form-select"></select>
+<div class="page-header">
+  <div>
+    <!-- Page title -->
+    <h1>Identity Preview</h1>
+    <!-- Explanation -->
+    <p class="text-muted">
+      See what information is shared through an approved identity request.
+    </p>
   </div>
-  <button class="btn btn-primary" onclick="previewDisclosure()">
-    View Identity
-  </button>
 </div>
 
-<hr />
+<!-- Request selector -->
+<div class="card disclosure-selector">
+  <div class="selector-header">
+    <div class="selector-icon">
+      <i class="bi bi-eye"></i>
+    </div>
 
-<div id="preview-result"></div>
+    <div>
+      <h4>Select an approved request</h4>
+      <p>Choose a request to preview the information that can be disclosed.</p>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <label for="identity_request" class="form-label">
+      Approved Identity Request
+    </label>
+
+    <select id="identity_request" class="form-select"></select>
+  </div>
+
+  <div class="d-flex justify-content-end">
+    <button class="btn btn-primary" onclick="previewDisclosure()">
+      <i class="bi bi-eye"></i>
+      Preview Identity
+    </button>
+  </div>
+</div>
+
+<!-- Results -->
+<div id="preview-result" class="mt-4"></div>
 
 {% endblock %} {% block scripts %}
 <script src="{% static 'frontend/js/disclosure-preview.js' %}" defer></script>

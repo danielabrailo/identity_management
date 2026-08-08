@@ -16,8 +16,12 @@ async function loadRequests() {
   //If there isn't any approved request yet
   if (requests.length === 0) {
     document.getElementById("preview-result").innerHTML = `
-      <div class="alert alert-info mt-3">
-        You do not have any approved identity requests yet
+      <div class="empty-state">
+        <i class="bi bi-inbox"></i>
+        <h4>No Approved Requests</h4>
+        <p>
+          You don't have any approved identity requests to preview yet.
+        </p>
       </div>
     `;
     select.disabled = true;
@@ -50,22 +54,67 @@ async function previewDisclosure() {
   renderResult(result);
 }
 function renderResult(data) {
-  let html = "<h4>Disclosed Information</h4>";
-  html += "<table class='table'>";
-
+  //build hMTL
+  let html = `
+    <div class="disclosure-result">
+      <div class="result-header">
+        <div>
+          <h3>Disclosed Information</h3>
+          <p>
+            This is the information available through this approved request.
+          </p>
+        </div>
+        <div class="result-status">
+          <i class="bi bi-shield-check"></i>
+          Approved
+        </div>
+      </div>
+      <div class="disclosure-grid">
+  `;
+  //Parse through data
   Object.entries(data).forEach(([key, value]) => {
-    if (!value) {
-      value = "Not visible";
+    //only display fields that contain actual data
+    if (value === null || value === undefined || value === "") {
+      return;
     }
     html += `
-                <tr>
-                    <th>${labels[key] || key}</th>
-                    <td>${value}</td>
-                </tr>
-            `;
+      <div class="disclosure-item visible">
+        <div class="disclosure-icon">
+          <i class="bi ${getDisclosureIcon(key)}"></i>
+        </div>
+        <div class="disclosure-content">
+          <span class="disclosure-label">
+            ${labels[key] || key}
+          </span>
+          <span class="disclosure-value">
+            ${value}
+          </span>
+        </div>
+        <div class="disclosure-status">
+          <i class="bi bi-check-circle-fill"></i>
+        </div>
+      </div>
+    `;
   });
+  html += `
+      </div>
 
-  html += "</table>";
+    </div>
+  `;
   document.getElementById("preview-result").innerHTML = html;
+}
+function getDisclosureIcon(key) {
+  //Get the corresponding icons
+  const icons = {
+    display_name: "bi-person",
+    email: "bi-envelope",
+    phone: "bi-telephone",
+    job_title: "bi-briefcase",
+    linkedin: "bi-linkedin",
+    social_media: "bi-share",
+    nickname: "bi-person-heart",
+    organization: "bi-building",
+  };
+  return icons[key] || "bi-info-circle";
 }
 loadRequests();
