@@ -1,11 +1,18 @@
 {% extends "base.html" %} {% block content %} {% load static %}
 
-<h2>Incoming Identity Requests</h2>
+<div class="page-header">
+  <div>
+    <!-- Title -->
+    <h1>Incoming Requests</h1>
+    <!-- Explanation -->
+    <p class="text-muted">
+      Review requests for access to your identity information.
+    </p>
+  </div>
+</div>
 
-<div id="requests-container"></div>
+<div id="requests-container" class="mb-3"></div>
 
 {% endblock %} {% block scripts %}
-
 <script src="{% static 'frontend/js/incoming-requests.js' %}" defer></script>
-
 {% endblock %}
