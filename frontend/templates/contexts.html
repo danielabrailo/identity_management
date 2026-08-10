@@ -14,9 +14,6 @@
   </button>
 </div>
 
-<!-- List of profiles -->
-<div id="context-list" class="profile-grid"></div>
-
 <!-- create profile form -->
 <div id="form-container" class="card profile-form mt-4" style="display: none">
   <h3 id="form-title" class="mb-4">Create Profile</h3>
@@ -74,6 +71,10 @@
     </button>
   </div>
 </div>
+
+<!-- List of profiles -->
+<div id="context-list" class="profile-grid mt-4"></div>
+
 {% endblock %} {% block scripts %}
 <script src="{% static 'frontend/js/contexts.js' %}" defer></script>
 {% endblock %}
