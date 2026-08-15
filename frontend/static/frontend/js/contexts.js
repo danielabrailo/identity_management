@@ -151,14 +151,18 @@ function getContextIcon(context) {
   switch (context.toLowerCase()) {
     case "professional":
       return "💼";
+    case "public":
+      return "🌎";
     case "academic":
       return "🎓";
     case "social":
       return "🎉";
-    case "legal":
+    case "governmental/legal":
       return "⚖️";
     case "online":
       return "🌐";
+    case "personal":
+      return "🏠";
     default:
       return "🪪";
   }
