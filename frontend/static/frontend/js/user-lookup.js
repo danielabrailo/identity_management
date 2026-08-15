@@ -1,12 +1,3 @@
-// Add labels for a better display in the UI
-const labels = {
-  display_name: "Display Name",
-  email: "Email",
-  phone: "Phone",
-  job_title: "Job Title",
-  linkedin: "LinkedIn",
-  social_media: "Social Media",
-};
 async function searchUsers() {
   // Get username
   const username = document.getElementById("search").value.trim();

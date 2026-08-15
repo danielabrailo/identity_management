@@ -21,7 +21,13 @@ class PolicySerializer(serializers.ModelSerializer):
             'can_view_linkedin',
             'can_view_social_media',
             'can_view_nickname',
-            'can_view_organization'
+            'can_view_organization',
+            'can_view_pronouns',
+            'can_view_location',
+            'can_view_university',
+            'can_view_website',
+            'can_view_bio',
+            'can_view_preferred_contact_way'
         ]
         read_only_fields = ['id']
 

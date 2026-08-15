@@ -39,6 +39,12 @@ class ContextProfileSerializer(serializers.ModelSerializer):
             'nickname',
             'social_media',
             'organization',
+            'pronouns',
+            'location',
+            'university',
+            'website',
+            'bio',
+            'preferred_contact_way',
             'created_at',
             'updated_at',
         ]

@@ -6,6 +6,14 @@ const labels = {
   job_title: "Job Title",
   linkedin: "LinkedIn",
   social_media: "Social Media",
+  nickname: "Nickname",
+  organization: "Organization",
+  pronouns: "Pronouns",
+  location: "Location",
+  university: "University",
+  website: "Website",
+  bio: "Bio",
+  preferred_contact_way: "Preferred Contact Way",
 };
 
 async function loadRequests() {
@@ -114,6 +122,12 @@ function getDisclosureIcon(key) {
     social_media: "bi-share",
     nickname: "bi-person-heart",
     organization: "bi-building",
+    pronouns: "bi-person",
+    location: "bi-geo-alt",
+    university: "bi-mortarboard",
+    website: "bi-globe",
+    bio: "bi-card-text",
+    preferred_contact_way: "bi-chat-dots",
   };
   return icons[key] || "bi-info-circle";
 }

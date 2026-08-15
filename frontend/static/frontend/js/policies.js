@@ -27,6 +27,13 @@ async function loadPolicies() {
       if (p.can_view_social_media) permissions.push("Social Media");
       if (p.can_view_nickname) permissions.push("Nickname");
       if (p.can_view_organization) permissions.push("Organization");
+      if (p.can_view_pronouns) permissions.push("Pronouns");
+      if (p.can_view_location) permissions.push("Location");
+      if (p.can_view_university) permissions.push("University");
+      if (p.can_view_website) permissions.push("Website");
+      if (p.can_view_bio) permissions.push("Bio");
+      if (p.can_view_preferred_contact_way)
+        permissions.push("Preferred Contact Way");
       //Build HTML with each permission in a card style
       html += `
         <div class="policy-card">
@@ -125,6 +132,14 @@ async function savePolicy() {
     can_view_social_media: document.getElementById("social_media").checked,
     can_view_nickname: document.getElementById("nickname").checked,
     can_view_organization: document.getElementById("organization").checked,
+    can_view_pronouns: document.getElementById("pronouns").checked,
+    can_view_location: document.getElementById("location").checked,
+    can_view_university: document.getElementById("university").checked,
+    can_view_website: document.getElementById("website").checked,
+    can_view_bio: document.getElementById("bio").checked,
+    can_view_preferred_contact_way: document.getElementById(
+      "preferred_contact_way"
+    ).checked,
   };
 
   if (id) {
@@ -159,6 +174,13 @@ async function editPolicy(id) {
   document.getElementById("social_media").checked = p.can_view_social_media;
   document.getElementById("nickname").checked = p.can_view_nickname;
   document.getElementById("organization").checked = p.can_view_organization;
+  document.getElementById("pronouns").checked = p.can_view_pronouns;
+  document.getElementById("location").checked = p.can_view_location;
+  document.getElementById("university").checked = p.can_view_university;
+  document.getElementById("website").checked = p.can_view_website;
+  document.getElementById("bio").checked = p.can_view_bio;
+  document.getElementById("preferred_contact_way").checked =
+    p.can_view_preferred_contact_way;
 
   showForm();
 }
@@ -202,6 +224,12 @@ function resetPolicyForm() {
   document.getElementById("social_media").checked = false;
   document.getElementById("nickname").checked = false;
   document.getElementById("organization").checked = false;
+  document.getElementById("pronouns").checked = false;
+  document.getElementById("location").checked = false;
+  document.getElementById("university").checked = false;
+  document.getElementById("website").checked = false;
+  document.getElementById("bio").checked = false;
+  document.getElementById("preferred_contact_way").checked = "";
 }
 
 loadPolicies();

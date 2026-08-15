@@ -30,6 +30,12 @@ class ContextProfile(models.Model):
     nickname = models.CharField(max_length=100, blank=True)
     social_media = models.TextField(blank=True)
     organization = models.CharField(max_length=150, blank=True)
+    pronouns = models.CharField(max_length=50, blank=True)
+    location = models.CharField(max_length=150, blank=True)
+    university = models.CharField(max_length=150, blank=True)
+    website = models.URLField(blank=True)
+    bio = models.TextField(blank=True)
+    preferred_contact_way = models.CharField(max_length=50, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -80,6 +86,12 @@ class Policy(models.Model):
     can_view_social_media = models.BooleanField(default=False)
     can_view_nickname = models.BooleanField(default=False)
     can_view_organization = models.BooleanField(default=False)
+    can_view_pronouns = models.BooleanField(default=False)
+    can_view_location = models.BooleanField(default=False)
+    can_view_university = models.BooleanField(default=False)
+    can_view_website = models.BooleanField(default=False)
+    can_view_bio = models.BooleanField(default=False)
+    can_view_preferred_contact_way = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.account.username} - {self.context.name} - {self.requester_type.name}"

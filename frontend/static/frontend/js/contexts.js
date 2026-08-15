@@ -125,6 +125,27 @@ async function loadProfiles() {
               `
               : ""
           }
+
+          ${
+            p.location
+              ? `
+                <p>
+                  <i class="bi bi-geo-alt"></i>
+                  ${p.location}
+                </p>
+              `
+              : ""
+          }
+          ${
+            p.university
+              ? `
+                <p>
+                  <i class="bi bi-mortarboard"></i>
+                  ${p.university}
+                </p>
+              `
+              : ""
+          }
           <div class="profile-actions">
             <button
               class="btn btn-primary btn-sm"
@@ -189,6 +210,13 @@ async function saveProfile() {
     linkedin: document.getElementById("linkedin").value,
     nickname: document.getElementById("nickname").value,
     organization: document.getElementById("organization").value,
+    pronouns: document.getElementById("pronouns").value,
+    location: document.getElementById("location").value,
+    university: document.getElementById("university").value,
+    website: document.getElementById("website").value,
+    bio: document.getElementById("bio").value,
+    preferred_contact_way: document.getElementById("preferred_contact_way")
+      .value,
   };
 
   if (id) {
@@ -215,6 +243,13 @@ async function editProfile(id) {
   document.getElementById("linkedin").value = data.linkedin;
   document.getElementById("nickname").value = data.nickname;
   document.getElementById("organization").value = data.organization;
+  document.getElementById("pronouns").value = data.pronouns;
+  document.getElementById("location").value = data.location;
+  document.getElementById("university").value = data.university;
+  document.getElementById("website").value = data.website;
+  document.getElementById("bio").value = data.bio;
+  document.getElementById("preferred_contact_way").value =
+    data.preferred_contact_way;
 
   document.getElementById("form-container").style.display = "block";
 }
@@ -236,6 +271,12 @@ function resetContextProfileForm() {
   document.getElementById("linkedin").value = "";
   document.getElementById("nickname").value = "";
   document.getElementById("organization").value = "";
+  document.getElementById("pronouns").value = "";
+  document.getElementById("location").value = "";
+  document.getElementById("university").value = "";
+  document.getElementById("website").value = "";
+  document.getElementById("bio").value = "";
+  document.getElementById("preferred_contact_way").value = "";
 
   const contextSelect = document.getElementById("context");
   contextSelect.value = "";
